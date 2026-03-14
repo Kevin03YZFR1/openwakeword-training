@@ -24,6 +24,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN git clone https://github.com/dscripka/openWakeWord openwakeword \
     && pip install --no-cache-dir -e ./openwakeword
 
+# Patch: make piper generate_samples import conditional (we use Kokoro, not Piper)
+COPY patches/skip-piper-import.py /tmp/skip-piper-import.py
+RUN python3 /tmp/skip-piper-import.py openwakeword/openwakeword/train.py
+
 # Download embedding models (small, safe to bake into image)
 RUN mkdir -p openwakeword/openwakeword/resources/models \
     && curl -L -o openwakeword/openwakeword/resources/models/embedding_model.onnx \

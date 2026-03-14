@@ -179,6 +179,7 @@ def create_config(wake_word: str, n_samples: int, training_steps: int,
     config["background_paths"] = [f'{data_dir}/audioset_16k', f'{data_dir}/fma']
     config["false_positive_validation_data_path"] = f"{data_dir}/validation_set_features.npy"
     config["feature_data_files"] = {"ACAV100M_sample": f"{data_dir}/openwakeword_features_ACAV100M_2000_hrs_16bit.npy"}
+    config.pop("piper_sample_generator_path", None)  # We use Kokoro, not Piper
 
     config_path = WORK_DIR / "training_config.yaml"
     with open(config_path, 'w') as f:
